@@ -23,32 +23,64 @@ async function loadFileFromFolder(path, folderHandle, readOnly, type) {
         return;
     }
 
-    // Manifest Frame
+    // Manifest Frame or another
     let DOMtarget = path === 'murdermanifest.sodso.json' ? document.querySelector('#manifest_panel>div') : document.getElementById('trees');
-
     let treeEle = addTreeElement(path, DOMtarget, { copySource, save });
-
     if(!treeEle) return;
 
+    //data parsing
     var data = JSON.parse(await (await (loadedFile)?.getFile())?.text());
-    console.log(data);
-
     let fileType = data.fileType || type || "Manifest";
+    console.log(jsonToHtml(data,DOMtarget));
+
+    function jsonToHtml(json, parentElement = document.body) {
+        const createNode = (key, value) => {
+            let element = fastDiv();
+
+            if (typeof value === 'object' && value !== null) {
+                // Создаем заголовок для объекта или массива
+                let header = document.createElement('strong');
+                header.textContent = `${key}:`;
+                element.appendChild(header);
+
+                // Рекурсивно обрабатываем объект или массив
+                let childContainer = document.createElement('div');
+                childContainer.style.marginLeft = '20px';
+                for (let childKey in value) {
+                    childContainer.appendChild(createNode(childKey, value[childKey]));
+                }
+                element.appendChild(childContainer);
+            } else {
+                // Создаем элемент для простых типов данных
+                element.innerHTML = `<strong>${key}:</strong> ${value}`;
+            }
+
+            return element;
+        };
+
+        // Очищаем родительский элемент
+        parentElement.innerHTML = '';
+
+        // Начинаем процесс с корневого элемента
+        for (let key in json) {
+            parentElement.appendChild(createNode(key, json[key]));
+        }
+    }
 
     // Show actual text
     // createDummyKeys(data);
 
     // Create json-tree
-    var tree = jsonTree.create(data, treeEle);
+    /*var tree = jsonTree.create(data, treeEle);
+    console.log(tree);
     runTreeSetup();
-    markDefaultValues();
+    markDefaultValues();*/
 
     function createDummyKeys(data) {
         return data;
     }
 
-    function mapSplitPath(typeList)
-    {
+    function mapSplitPath(typeList) {
         if(typeList.length == 1)
         {
             typeList = [fileType, ...typeList];
@@ -361,8 +393,7 @@ async function loadFileFromFolder(path, folderHandle, readOnly, type) {
         return JSON.stringify(data, (key, value) => (Object.keys(DUMMY_KEYS).includes(key) ? undefined : value), 2);
     }
 
-    function markDefaultValues()
-    {
+    function markDefaultValues() {
         tree.findAndHandle(item => {
             return item.parent.isRoot;
         }, item => {
