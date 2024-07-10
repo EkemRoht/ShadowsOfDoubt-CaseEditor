@@ -1,6 +1,6 @@
 /*1 MAIN*/
 html {
-    overflow-x: clip;
+
 }
 main>article>section:first-of-type {
     display: grid;
@@ -14,6 +14,31 @@ ul {
 }
 ul li {
     list-style-type: none;
+}
+
+.container-expanded {
+    max-width: calc(100% - 100px) !important;
+}
+
+.files-article-container {
+    position: relative;
+}
+
+.container-expand-button {
+    position: absolute;
+    right: 10px;
+    top: 0px;
+    letter-spacing: -5px;
+    cursor: pointer;
+    color: black;
+}
+
+.container-expand-button:before {
+    content: '>>';
+}
+
+.container-expanded .container-expand-button:before {
+    content: '<<';
 }
 
 /*1.1 Manifest Panel*/
@@ -71,6 +96,24 @@ ul li {
     text-overflow: ellipsis;
 }
 
+/*3 SCROLLS*/
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #c52f21;
+}
+.jsontree_tree::-webkit-scrollbar{
+    width: 5px;
+}
+.jsontree_tree::-webkit-scrollbar-thumb {
+    background-color: #525f7a;
+}
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
 /*X UTIL CLASSES*/
 .hidden {
     display: none;
@@ -84,14 +127,17 @@ ul li {
     overflow-x: auto;
     overflow-y: hidden;
     width: 100%;
+    position: relative;
 }
 
+
+/*I don't sort this sry*/
 #trees {
     font-family:monospace;
     font-size: 14px;
     color: black;
     display: grid;
-    grid-auto-columns: minmax(400px, auto);
+    grid-auto-columns: minmax(500px, auto);
     grid-auto-flow: column;
     grid-gap: 10px;
 }
@@ -125,7 +171,7 @@ ul li {
 }
 
 #trees > * {
-    padding: 10px;
+    padding: 10px 0 10px 10px;
     background: #c52f2110;
     border-radius: 5px;
 }
@@ -151,6 +197,7 @@ ul li {
 #trees .editor-bar button {
     padding: 0;
     margin: 0;
+    max-width: 100px;
 }
 
 #trees .editor-bar h5 {
@@ -162,12 +209,14 @@ ul li {
 
 #trees .editor-bar ul, #trees .editor-bar li {
     display: block;
-    padding: 0 5px;
+    padding: 5px 5px 0;
 }
 
 /*JSON tree's styles*/
 .jsontree_tree {
     margin-left: 0;
+    overflow-y: auto;
+    max-height: 65vh;
 }
 
 #trees .jsontree_child-nodes {
