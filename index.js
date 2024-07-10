@@ -31,7 +31,7 @@ async function loadFileFromFolder(path, folderHandle, readOnly, type) {
     //data parsing
     var data = JSON.parse(await (await (loadedFile)?.getFile())?.text());
     let fileType = data.fileType || type || "Manifest";
-    console.log(jsonToHtml(data,DOMtarget));
+    jsonToHtml(data,DOMtarget);
 
     function jsonToHtml(json, parentElement = document.body) {
         const createNode = (key, value) => {
