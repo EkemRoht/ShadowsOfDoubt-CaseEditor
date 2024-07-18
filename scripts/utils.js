@@ -11,3 +11,16 @@ function fastDiv(DOM_class) {
 		return fastElement("div")
 	}
 }
+function fastCheckbox(checked, DOM_class) {
+	let checkbox;
+	if (DOM_class) {
+		checkbox = fastElement("input", DOM_class)
+	} else {
+		checkbox = fastElement("input")
+	}
+	checkbox.type = 'checkbox';
+	if (checked) {
+		checkbox.toggleAttribute('checked')
+	}
+	return checkbox
+}

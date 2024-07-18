@@ -33,40 +33,6 @@ async function loadFileFromFolder(path, folderHandle, readOnly, type) {
     let fileType = data.fileType || type || "Manifest";
     jsonToHtml(data,DOMtarget);
 
-    function jsonToHtml(json, parentElement = document.body) {
-        const createNode = (key, value) => {
-            let element = fastDiv();
-
-            if (typeof value === 'object' && value !== null) {
-                // Создаем заголовок для объекта или массива
-                let header = document.createElement('strong');
-                header.textContent = `${key}:`;
-                element.appendChild(header);
-
-                // Рекурсивно обрабатываем объект или массив
-                let childContainer = document.createElement('div');
-                childContainer.style.marginLeft = '20px';
-                for (let childKey in value) {
-                    childContainer.appendChild(createNode(childKey, value[childKey]));
-                }
-                element.appendChild(childContainer);
-            } else {
-                // Создаем элемент для простых типов данных
-                element.innerHTML = `<strong>${key}:</strong> ${value}`;
-            }
-
-            return element;
-        };
-
-        // Очищаем родительский элемент
-        parentElement.innerHTML = '';
-
-        // Начинаем процесс с корневого элемента
-        for (let key in json) {
-            parentElement.appendChild(createNode(key, json[key]));
-        }
-    }
-
     // Show actual text
     // createDummyKeys(data);
 
